@@ -18,11 +18,12 @@ import { useActiveTrack } from 'react-native-track-player'
 const PlayerScreen = () => {
 	const activeTrack = useActiveTrack()
 	const { imageColors } = usePlayerBackground(activeTrack?.artwork ?? unknownTrackImageUri)
-
 	const { top, bottom } = useSafeAreaInsets()
-
 	const { isFavorite, toggleFavorite } = useTrackPlayerFavorite()
-	console.log('ok nhas')
+
+	const gradientColors = imageColors?.background && imageColors?.primary
+		? [imageColors.background, imageColors.primary] // Use imageColors if available
+		: [colors.background, colors.background];
 	if (!activeTrack) {
 		return (
 			<View style={[defaultStyles.container, { justifyContent: 'center' }]}>
@@ -34,12 +35,10 @@ const PlayerScreen = () => {
 	return (
 		<LinearGradient
 			style={{ flex: 1 }}
-			colors={
-				imageColors ? [imageColors.background, imageColors.primary] : [colors.background, colors.background]
-			}
+			colors={gradientColors}
 		>
 			<View style={styles.overlayContainer}>
-				<DismissPlayerSymbol /> 
+				<DismissPlayerSymbol />
 
 				<View style={{ flex: 1, marginTop: top + 70, marginBottom: bottom }}>
 					<View style={styles.artworkImageContainer}>
