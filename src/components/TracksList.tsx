@@ -3,15 +3,18 @@ import { unknownTrackImageUri } from '@/constants/images'
 import { useQueue } from '@/store/queue'
 import { utilsStyles } from '@/styles'
 import { useRef } from 'react'
-import { FlatList, FlatListProps, Text, View } from 'react-native'
+import { ActivityIndicator, FlatList, FlatListProps, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import TrackPlayer, { Track } from 'react-native-track-player'
 import { QueueControls } from './QueueControls'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export type TracksListProps = Partial<FlatListProps<Track>> & {
 	id: string
-	tracks: Track[]
-	hideQueueControls?: boolean
+	tracks: Track[],
+	onScrollEnd?: () => void,
+	hideQueueControls?: boolean,
+	loading?:boolean
 }
 
 const ItemDivider = () => (
@@ -21,12 +24,12 @@ const ItemDivider = () => (
 export const TracksList = ({
 	id,
 	tracks,
+	loading,
 	hideQueueControls = false,
 	...flatlistProps
 }: TracksListProps) => {
 	const queueOffset = useRef(0)
 	const { activeQueueId, setActiveQueueId } = useQueue()
-
 	const handleTrackSelect = async (selectedTrack: Track) => {
 		const trackIndex = tracks.findIndex((track) => track.url === selectedTrack.url)
 
@@ -59,7 +62,6 @@ export const TracksList = ({
 			TrackPlayer.play()
 		}
 	}
-
 	return (
 		<FlatList
 			data={tracks}
@@ -84,6 +86,11 @@ export const TracksList = ({
 			renderItem={({ item: track }) => (
 				<TracksListItem track={track} onTrackSelect={handleTrackSelect} />
 			)}
+			ListFooterComponent={loading ? (
+				<View style={{ padding: 10, alignItems: 'center' }}>
+					<ActivityIndicator size="large" color="blue" />
+				</View>
+			) : null}
 			{...flatlistProps}
 		/>
 	)

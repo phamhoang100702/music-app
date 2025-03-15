@@ -5,23 +5,38 @@ import { useNavigationSearch } from '@/hooks/useNavigationSearch'
 import { useArtists } from '@/store/library'
 import { defaultStyles, utilsStyles } from '@/styles'
 import { Link } from 'expo-router'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { FlatList, StyleSheet, Text, TouchableHighlight, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { ScrollView } from 'react-native-gesture-handler'
+import { getAllSinger } from '@/services/api/singer'
 
 const ItemSeparatorComponent = () => {
 	return <View style={[utilsStyles.itemSeparator, { marginLeft: 50, marginVertical: 12 }]} />
 }
 
 const ArtistsScreen = () => {
+	const [artists, setArtists] = useState([]) // State to store artists
+
 	const search = useNavigationSearch({
 		searchBarOptions: {
 			placeholder: 'Find in artists',
 		},
 	})
 
-	const artists = useArtists()
+	useEffect(() => {
+		const fetchArtists = async () => {
+			try {
+				const response = await getAllSinger()// Update state with API data
+				setArtists(response.content);
+			} catch (error) {
+				console.error('Error fetching artists:', error)
+			}
+		}
+		fetchArtists()
+	}, [])
+
+	// const artists = useArtists()
 
 	const filteredArtists = useMemo(() => {
 		if (!search) return artists
@@ -62,7 +77,7 @@ const ArtistsScreen = () => {
 										<View>
 											<FastImage
 												source={{
-													uri: unknownArtistImageUri,
+													uri: artist.avatar ? artist.avatar : unknownArtistImageUri ,
 													priority: FastImage.priority.normal,
 												}}
 												style={styles.artistImage}

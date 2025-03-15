@@ -44,7 +44,7 @@ const PlayerScreen = () => {
 					<View style={styles.artworkImageContainer}>
 						<FastImage
 							source={{
-								uri: activeTrack.artwork ?? unknownTrackImageUri,
+								uri: activeTrack.thumbnail ?? unknownTrackImageUri,
 								priority: FastImage.priority.high,
 							}}
 							resizeMode="cover"
@@ -82,9 +82,9 @@ const PlayerScreen = () => {
 								</View>
 
 								{/* Track artist */}
-								{activeTrack.artist && (
+								{activeTrack.singers && (
 									<Text numberOfLines={1} style={[styles.trackArtistText, { marginTop: 6 }]}>
-										{activeTrack.artist}
+										{activeTrack.singers[0].name}
 									</Text>
 								)}
 							</View>

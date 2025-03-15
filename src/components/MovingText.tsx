@@ -21,6 +21,7 @@ export const MovingText = ({ text, animationThreshold, style }: MovingTextProps)
 	const shouldAnimate = text.length >= animationThreshold
 
 	const textWidth = text.length * 3
+	console.log("moving text", text);
 
 	useEffect(() => {
 		if (!shouldAnimate) return

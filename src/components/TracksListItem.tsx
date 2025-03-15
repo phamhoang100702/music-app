@@ -19,16 +19,14 @@ export const TracksListItem = ({
 	onTrackSelect: handleTrackSelect,
 }: TracksListItemProps) => {
 	const { playing } = useIsPlaying()
-
 	const isActiveTrack = useActiveTrack()?.url === track.url
-
 	return (
 		<TouchableHighlight onPress={() => handleTrackSelect(track)}>
 			<View style={styles.trackItemContainer}>
 				<View>
 					<FastImage
 						source={{
-							uri: track.artwork ?? unknownTrackImageUri,
+							uri: track.thumbnail ? track.thumbnail : unknownTrackImageUri,
 							priority: FastImage.priority.normal,
 						}}
 						style={{
@@ -74,9 +72,9 @@ export const TracksListItem = ({
 							{track.title}
 						</Text>
 
-						{track.artist && (
+						{track.singers && (
 							<Text numberOfLines={1} style={styles.trackArtistText}>
-								{track.artist}
+								{track.singers[0].name}
 							</Text>
 						)}
 					</View>

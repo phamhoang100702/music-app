@@ -44,16 +44,17 @@ const styles = StyleSheet.create({
 	searchBarContainer: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		backgroundColor: colors.white,
-		borderRadius: 20,
+		backgroundColor: '#333', // Màu xám tối để tạo sự nổi bật nhưng không quá đen
+		borderRadius: 13,
 		paddingHorizontal: 10,
 		height: 40,
-		width: 250,
+		width: 200,
 	},
 	searchInput: {
 		flex: 1,
 		fontSize: 16,
 		padding: 0,
-		color: colors.primary,
+		color: 'white', // Văn bản vẫn giữ màu trắng để dễ đọc trên nền tối
 	},
 })
+
