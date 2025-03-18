@@ -9,15 +9,18 @@ import { useEffect, useMemo, useState } from 'react'
 import { FlatList, StyleSheet, Text, TouchableHighlight, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { ScrollView } from 'react-native-gesture-handler'
+import { useLogTrackPlayerState } from '@/hooks/useLogTrackPlayerState'
 import { getAllSinger } from '@/services/api/singer'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useSelector } from 'react-redux'
 
 const ItemSeparatorComponent = () => {
 	return <View style={[utilsStyles.itemSeparator, { marginLeft: 50, marginVertical: 12 }]} />
 }
 
 const ArtistsScreen = () => {
-	const [artists, setArtists] = useState([]) // State to store artists
-
+	const [artists, setArtists] = useState<any>([]) // State to store artists
+	const token = useSelector((state: any) => state.token);
 	const search = useNavigationSearch({
 		searchBarOptions: {
 			placeholder: 'Find in artists',
@@ -27,10 +30,14 @@ const ArtistsScreen = () => {
 	useEffect(() => {
 		const fetchArtists = async () => {
 			try {
-				const response = await getAllSinger()// Update state with API data
-				setArtists(response.content);
+				const response = await getAllSinger(token.accessToken)// Update state with API data
+				if (response.content) {
+					const data = response.content.filter((item: any) => item.id !== 1)
+					setArtists(data)
+				}
+
 			} catch (error) {
-				console.error('Error fetching artists:', error)
+				console.error('1Error fetching artists:', error)
 			}
 		}
 		fetchArtists()
@@ -71,13 +78,13 @@ const ArtistsScreen = () => {
 					data={filteredArtists}
 					renderItem={({ item: artist }) => {
 						return (
-							<Link href={`/artists/${artist.name}`} asChild>
+							<Link href={`/artists/${artist.id}`} asChild>
 								<TouchableHighlight activeOpacity={0.8}>
 									<View style={styles.artistItemContainer}>
 										<View>
 											<FastImage
 												source={{
-													uri: artist.avatar ? artist.avatar : unknownArtistImageUri ,
+													uri: artist.avatar ?? unknownArtistImageUri,
 													priority: FastImage.priority.normal,
 												}}
 												style={styles.artistImage}

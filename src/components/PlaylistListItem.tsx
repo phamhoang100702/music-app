@@ -16,7 +16,7 @@ export const PlaylistListItem = ({ playlist, ...props }: PlaylistListItemProps) 
 				<View>
 					<FastImage
 						source={{
-							uri: playlist.artworkPreview,
+							uri: playlist.thumbnail,
 							priority: FastImage.priority.normal,
 						}}
 						style={styles.playlistArtworkImage}

@@ -7,7 +7,6 @@ import { ActivityIndicator, FlatList, FlatListProps, Text, View } from 'react-na
 import FastImage from 'react-native-fast-image'
 import TrackPlayer, { Track } from 'react-native-track-player'
 import { QueueControls } from './QueueControls'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export type TracksListProps = Partial<FlatListProps<Track>> & {
 	id: string
@@ -29,69 +28,80 @@ export const TracksList = ({
 	...flatlistProps
 }: TracksListProps) => {
 	const queueOffset = useRef(0)
-	const { activeQueueId, setActiveQueueId } = useQueue()
+	const { activeQueueId, setActiveQueueId } = useQueue();
+	console.log("id", id);
+	console.log("activeQueueId", activeQueueId);
 	const handleTrackSelect = async (selectedTrack: Track) => {
-		const trackIndex = tracks.findIndex((track) => track.url === selectedTrack.url)
-
+		const trackIndex = tracks.findIndex((track) =>{
+			return track.url === selectedTrack.url;
+		} )
 		if (trackIndex === -1) return
-
 		const isChangingQueue = id !== activeQueueId
-
 		if (isChangingQueue) {
 			const beforeTracks = tracks.slice(0, trackIndex)
 			const afterTracks = tracks.slice(trackIndex + 1)
-
 			await TrackPlayer.reset()
-
 			// we construct the new queue
 			await TrackPlayer.add(selectedTrack)
 			await TrackPlayer.add(afterTracks)
 			await TrackPlayer.add(beforeTracks)
-
 			await TrackPlayer.play()
+
 
 			queueOffset.current = trackIndex
 			setActiveQueueId(id)
 		} else {
+			console.log("vao day nhe 2")
+
 			const nextTrackIndex =
 				trackIndex - queueOffset.current < 0
 					? tracks.length + trackIndex - queueOffset.current
 					: trackIndex - queueOffset.current
-
 			await TrackPlayer.skip(nextTrackIndex)
 			TrackPlayer.play()
 		}
 	}
 	return (
-		<FlatList
-			data={tracks}
-			contentContainerStyle={{ paddingTop: 10, paddingBottom: 128 }}
-			ListHeaderComponent={
-				!hideQueueControls ? (
-					<QueueControls tracks={tracks} style={{ paddingBottom: 20 }} />
-				) : undefined
-			}
-			ListFooterComponent={ItemDivider}
-			ItemSeparatorComponent={ItemDivider}
-			ListEmptyComponent={
-				<View>
-					<Text style={utilsStyles.emptyContentText}>No songs found</Text>
+		<>
+			<FlatList
+				data={tracks}
+				contentContainerStyle={{ paddingTop: 10, paddingBottom: 128 }}
+				ListHeaderComponent={
+					!hideQueueControls ? (
+						<QueueControls tracks={tracks} style={{ paddingBottom: 20 }} />
+					) : undefined
+				}
+				ListFooterComponent={ItemDivider}
+				ItemSeparatorComponent={ItemDivider}
+				ListEmptyComponent={
+					<View>
+						<Text style={utilsStyles.emptyContentText}>No songs found</Text>
 
-					<FastImage
-						source={{ uri: unknownTrackImageUri, priority: FastImage.priority.normal }}
-						style={utilsStyles.emptyContentImage}
-					/>
-				</View>
+						<FastImage
+							source={{ uri: unknownTrackImageUri, priority: FastImage.priority.normal }}
+							style={utilsStyles.emptyContentImage}
+						/>
+					</View>
+				}
+				renderItem={({ item: track }) => (
+					<TracksListItem test={"hoang dep zai"} track={track} onTrackSelect={handleTrackSelect} />
+				)}
+				// ListFooterComponent={loading ? (
+				// 	<View style={{ padding: 10, alignItems: 'center' }}>
+				// 		<ActivityIndicator size="large" color="blue" />
+				// 	</View>
+				// ) : null}
+				{...flatlistProps}
+			/>
+			{
+				loading ?? (
+					<View style={{ padding: 10, alignItems: 'center' }}>
+						<ActivityIndicator size="large" color="blue" />
+					</View>
+				)
 			}
-			renderItem={({ item: track }) => (
-				<TracksListItem track={track} onTrackSelect={handleTrackSelect} />
-			)}
-			ListFooterComponent={loading ? (
-				<View style={{ padding: 10, alignItems: 'center' }}>
-					<ActivityIndicator size="large" color="blue" />
-				</View>
-			) : null}
-			{...flatlistProps}
-		/>
+		</>
+
+
 	)
 }

@@ -6,11 +6,18 @@ import { useNavigationSearch } from '@/hooks/useNavigationSearch'
 import { usePlaylists } from '@/store/library'
 import { defaultStyles } from '@/styles'
 import { useRouter } from 'expo-router'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { ScrollView, View } from 'react-native'
+import { getAllFavoriteSong, getAllPlaylistByUserId, searchAllPlaylistByNameForUser } from '@/services/api/playlist'
+import { useSelector } from 'react-redux'
 
 const PlaylistsScreen = () => {
+	const [playlists, setPlaylists] = useState<any>([])
+	const [page,setPage] = useState(0);
 	const router = useRouter()
+	const token = useSelector((state: any) => state.token)
+	const authInfo = useSelector((state: any) => state.auth)
+
 
 	const search = useNavigationSearch({
 		searchBarOptions: {
@@ -18,15 +25,28 @@ const PlaylistsScreen = () => {
 		},
 	})
 
-	const { playlists } = usePlaylists()
 
-	const filteredPlaylists = useMemo(() => {
-		return playlists.filter(playlistNameFilter(search))
-	}, [playlists, search])
+	// const filteredPlaylists = useMemo(() => {
+	// 	return playlists.filter(playlistNameFilter(search))
+	// }, [playlists, search])
 
 	const handlePlaylistPress = (playlist: Playlist) => {
-		router.push(`/(tabs)/playlists/${playlist.name}`)
+		router.push(`/(tabs)/playlists/${playlist.id}`)
 	}
+	const fetchPlaylists = async () => {
+		try {
+			const response = await searchAllPlaylistByNameForUser(search,page,10, token.accessToken);
+			console.log("response ",response);
+			if(response.content){
+				setPlaylists(response.content);
+			}
+		} catch (error) {
+			console.error('Error fetching playlists:', error)
+		}
+	}
+	useEffect(() => {
+		fetchPlaylists();
+	}, [page])
 
 	return (
 		<View style={defaultStyles.container}>
@@ -38,7 +58,7 @@ const PlaylistsScreen = () => {
 			>
 				<PlaylistsList
 					scrollEnabled={false}
-					playlists={filteredPlaylists}
+					playlists={playlists}
 					onPlaylistPress={handlePlaylistPress}
 				/>
 			</ScrollView>

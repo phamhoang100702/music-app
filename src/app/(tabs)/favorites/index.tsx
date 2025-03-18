@@ -5,24 +5,21 @@ import { generateTracksListId } from '@/helpers/miscellaneous'
 import { useNavigationSearch } from '@/hooks/useNavigationSearch'
 import { useFavorites } from '@/store/library'
 import { defaultStyles } from '@/styles'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { ScrollView, View } from 'react-native'
+import { useSelector } from 'react-redux'
 
 const FavoritesScreen = () => {
+	const favoritesTracks = useSelector((state: any) => state.favorite)
+	const [loading, setLoading] = useState(false)
 	const search = useNavigationSearch({
 		searchBarOptions: {
 			placeholder: 'Find in songs',
 		},
 	})
+	useEffect(() => {
 
-	const favoritesTracks = useFavorites().favorites
-
-	const filteredFavoritesTracks = useMemo(() => {
-		if (!search) return favoritesTracks
-
-		return favoritesTracks.filter(trackTitleFilter(search))
-	}, [search, favoritesTracks])
-
+	}, [favoritesTracks])
 	return (
 		<View style={defaultStyles.container}>
 			<ScrollView
@@ -32,7 +29,8 @@ const FavoritesScreen = () => {
 				<TracksList
 					id={generateTracksListId('favorites', search)}
 					scrollEnabled={false}
-					tracks={filteredFavoritesTracks}
+					tracks={favoritesTracks}
+					loading={loading}
 				/>
 			</ScrollView>
 		</View>

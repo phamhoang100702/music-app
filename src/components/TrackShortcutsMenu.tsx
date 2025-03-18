@@ -5,21 +5,28 @@ import { useRouter } from 'expo-router'
 import { PropsWithChildren } from 'react'
 import TrackPlayer, { Track } from 'react-native-track-player'
 import { match } from 'ts-pattern'
+import { useDispatch, useSelector } from 'react-redux'
+import { addSongToFavoritePlaylist, addSongToPlaylist, removeSongToFavoritePlaylist } from '@/services/api/playlist'
+import { addOneSongToFavoritePlaylist, removeOneSongFromFavoritePlaylist } from '@/redux/actions/favorite'
 
 type TrackShortcutsMenuProps = PropsWithChildren<{ track: Track }>
 
 export const TrackShortcutsMenu = ({ track, children }: TrackShortcutsMenuProps) => {
+	const favorites = useSelector((item: any) => item.favorite);
+	const token = useSelector((item: any) => item.token);
+	const dispatch = useDispatch();
 	const router = useRouter()
 
-	const isFavorite = track.rating === 1
+	const isFavorite = favorites.map((track: Track) => track.id).includes(track.id)
 
-	const { toggleTrackFavorite } = useFavorites()
+
 	const { activeQueueId } = useQueue()
 
 	const handlePressAction = (id: string) => {
 		match(id)
 			.with('add-to-favorites', async () => {
-				toggleTrackFavorite(track)
+				addSongToFavoritePlaylist(track.id,token.accessToken);
+				dispatch(addOneSongToFavoritePlaylist(track))
 
 				// if the tracks is in the favorite queue, add it
 				if (activeQueueId?.startsWith('favorites')) {
@@ -27,8 +34,8 @@ export const TrackShortcutsMenu = ({ track, children }: TrackShortcutsMenuProps)
 				}
 			})
 			.with('remove-from-favorites', async () => {
-				toggleTrackFavorite(track)
-
+				removeSongToFavoritePlaylist(track.id,token.accessToken);
+				dispatch(removeOneSongFromFavoritePlaylist(track))
 				// if the track is in the favorites queue, we need to remove it
 				if (activeQueueId?.startsWith('favorites')) {
 					const queue = await TrackPlayer.getQueue()

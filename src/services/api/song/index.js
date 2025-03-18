@@ -1,36 +1,33 @@
-import {del, get, post, post_form_data, put, put_form_data, uploadFile} from "../../utils";
+import { del, get, post, post_form_data, put, put_form_data, uploadFile } from '../../utils'
 
-export const searchSongByKeyword = async (keyword = "",page = 0,size = 20) => {
-    return await get(`song?keyword=${keyword}&page=${page}&size=${size}`, {});
-};
+export const searchSongByKeyword = async (keyword = '', page = 0, size = 20, token = '') => {
+	return await get(`song?keyword=${keyword}&page=${page}&size=${size}`, token)
+}
 
-export const saveSong = async (options) => {
-    return await post_form_data("song", options);
-};
-export const deleteSongById = async (songId = "") => {
-    return await del("song/" + songId);
-};
+export const saveSong = async (options, token = '') => {
+	return await post_form_data('song', options, token)
+}
+export const deleteSongById = async (songId = '', token = '') => {
+	return await del('song/' + songId, token)
+}
 
-export const updateSong = async (object) => {
-    return await put_form_data("song", object);
-};
+export const updateSong = async (object, token = '') => {
+	return await put_form_data('song', object, token)
+}
 
 // la singer hoac admin
-export const getAllSongByCreatorId = async (creatorId) => {
-    return await get(`song/by-singer/${creatorId}`);
-};
+export const getAllSongByCreatorId = async (creatorId, token = '') => {
+	return await get(`song/by-singer/${creatorId}`, token)
+}
 
-export const getSongsByCreator = async () => {
-    return await get(`song/by-creator`);
-};
+export const getSongsByCreator = async (token = '') => {
+	return await get(`song/by-creator`, token)
+}
 
-export const getAllSongBySingerId = async (singerId) => {
-    return await get(`song/by-singer/${singerId}`);
-};
+export const getAllSongBySingerId = async (singerId, token = '') => {
+	return await get(`song/by-singer/${singerId}`, token)
+}
 
-export const uploadFileSound = async (formData) => {
-    return await uploadFile("s3", formData);
-};
 export const getTopSongWithMostListensByCategory = async () => {
-    return await get(`song/topByCategory`);
-};
+	return await get(`song/topByCategory`, '')
+}

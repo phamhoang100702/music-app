@@ -57,14 +57,14 @@ export const useArtists = () =>
 		return state.tracks.reduce((acc, track) => {
 			const existingArtist = acc.find((artist) => artist.name === track.artist)
 
-			if (existingArtist) {
-				existingArtist.tracks.push(track)
-			} else {
-				acc.push({
-					name: track.artist ?? 'Unknown',
-					tracks: [track],
-				})
-			}
+			// if (existingArtist) {
+			// 	existingArtist.tracks.push(track)
+			// } else {
+			// 	acc.push({
+			// 		name: track.artist ?? 'Unknown',
+			// 		tracks: [track],
+			// 	})
+			// }
 
 			return acc
 		}, [] as Artist[])
@@ -79,11 +79,11 @@ export const usePlaylists = () => {
 				if (existingPlaylist) {
 					existingPlaylist.tracks.push(track)
 				} else {
-					acc.push({
-						name: playlistName,
-						tracks: [track],
-						artworkPreview: track.artwork ?? unknownTrackImageUri,
-					})
+					// acc.push({
+					// 	name: playlistName,
+					// 	tracks: [track],
+					// 	artworkPreview: track.artwork ?? unknownTrackImageUri,
+					// })
 				}
 			})
 

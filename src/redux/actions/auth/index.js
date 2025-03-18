@@ -10,3 +10,11 @@ export const logout = () => {
     type: "USER_LOGOUT",
   }
 }
+
+export const addUserToken = (token)=>{
+  return {
+    type: "ADD_USER_TOKEN",
+    accessToken: token.accessToken,
+    refreshToken: token.refreshToken
+  }
+}

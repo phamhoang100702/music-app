@@ -1,36 +1,33 @@
-import {del, get, post, put, uploadFile} from "../../utils";
+import { del, get, post, put, uploadFile } from '../../utils'
 
 //TODO:
-export const updateSinger = async (object = {}) => {
-    return await put("user", object);
-};
-
-export const getAllSinger = async (name ) => {
-    return await get(`user/singer/get-all`)
+export const updateSinger = async (object = {}, token = '') => {
+	return await put('user', object, token)
 }
 
-export const searchSingersByKeyword = async (keyword = "", page = null, size = null) => {
-    return await get(`user/singer?keyword=${keyword}&page=${page}&size=${size}`);
+export const getAllSinger = async ( token = '') => {
+	return await get(`user/singer/get-all`, token)
+}
+
+export const searchSingersByKeyword = async (keyword = '', page = 0, size = 10, token = '') => {
+	return await get(`user/singer?keyword=${keyword}&page=${page}&size=${size}`, token)
 }
 
 
-export const uploadAvatar = async (formData) => {
-    return await uploadFile("s3/avatar", formData);
-};
 // top singer
-export const getTopSinger = async (top) => {
-    return await get(`follower/top-singer/${top}`);
-};
+export const getTopSinger = async (top, token = '') => {
+	return await get(`follower/top-singer/${top}`, token)
+}
 
-export const getFollowedSinger = async (id) => {
-    return await get(`follower/followed-singers/${id}`)
+export const getFollowedSinger = async (id, token = '') => {
+	return await get(`follower/followed-singers/${id}`, token)
 }
-export const getListFollower = async (id) => {
-    return await get(`follower/total-followers/${id}`)
+export const getListFollower = async (id, token = '') => {
+	return await get(`follower/total-followers/${id}`, token)
 }
-export const addFollow = async (singerId) => {
-    return await post(`follower/follow/${singerId}`)
+export const addFollow = async (singerId, token = '') => {
+	return await post(`follower/follow/${singerId}`, token)
 }
-export const removeFollow = async (singerId) => {
-    return await del(`follower/unfollow/${singerId}`)
+export const removeFollow = async (singerId, token = '') => {
+	return await del(`follower/unfollow/${singerId}`, token)
 }

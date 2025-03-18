@@ -4,13 +4,17 @@ import { generateTracksListId } from '@/helpers/miscellaneous'
 import { Playlist } from '@/helpers/types'
 import { useNavigationSearch } from '@/hooks/useNavigationSearch'
 import { defaultStyles } from '@/styles'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { QueueControls } from './QueueControls'
 import { TracksList } from './TracksList'
+import { getAllSongByPlaylistId } from '@/services/api/playlist'
+import { useSelector } from 'react-redux'
 
 export const PlaylistTracksList = ({ playlist }: { playlist: Playlist }) => {
+	const [tracks, setTracks] = useState<any>([])
+	const token = useSelector((state: any) => state.token)
 	const search = useNavigationSearch({
 		searchBarOptions: {
 			hideWhenScrolling: true,
@@ -18,10 +22,32 @@ export const PlaylistTracksList = ({ playlist }: { playlist: Playlist }) => {
 		},
 	})
 
-	const filteredPlaylistTracks = useMemo(() => {
-		return playlist.tracks.filter(trackTitleFilter(search))
-	}, [playlist.tracks, search])
+	const fetchSongs = async () => {
+		try {
+			const response = await getAllSongByPlaylistId(playlist.id, token.accessToken)
+			if (response.content){
+				playlist.tracks = response.content.map((song: any) => ({ ...song, url: song.sound }));
+				setTracks(playlist.tracks);
+			}
+		} catch (error) {
+			console.log(error)
+		}
 
+	}
+	useEffect(() => {
+		fetchSongs()
+	}, [playlist])
+
+
+	// const filteredPlaylistTracks = useMemo(() => {
+	// 	return playlist.tracks.filter(trackTitleFilter(search))
+	// }, [playlist.tracks, search])
+	useEffect(() => {
+		setTracks(playlist.tracks.filter(trackTitleFilter(search)))
+		if(search.length === 0){
+			setTracks(playlist.tracks);
+		}
+	}, [search])
 	return (
 		<TracksList
 			id={generateTracksListId(playlist.name, search)}
@@ -33,7 +59,7 @@ export const PlaylistTracksList = ({ playlist }: { playlist: Playlist }) => {
 					<View style={styles.artworkImageContainer}>
 						<FastImage
 							source={{
-								uri: playlist.artworkPreview,
+								uri: playlist.thumbnail,
 								priority: FastImage.priority.high,
 							}}
 							style={styles.artworkImage}
@@ -49,7 +75,7 @@ export const PlaylistTracksList = ({ playlist }: { playlist: Playlist }) => {
 					)}
 				</View>
 			}
-			tracks={filteredPlaylistTracks}
+			tracks={tracks}
 		/>
 	)
 }

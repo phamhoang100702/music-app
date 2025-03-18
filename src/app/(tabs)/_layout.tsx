@@ -4,8 +4,35 @@ import { FontAwesome, FontAwesome6, Ionicons, MaterialCommunityIcons } from '@ex
 import { BlurView } from 'expo-blur'
 import { Tabs } from 'expo-router'
 import { StyleSheet } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { getAllFavoriteSong } from '@/services/api/playlist'
+import { getUserInformation } from '@/services/api/user'
+import { login } from '@/redux/actions/auth'
+import { updateFavoritePlaylist } from '@/redux/actions/favorite'
 
 const TabsNavigation = () => {
+	const dispatch = useDispatch()
+	const token = useSelector((state: any) => state.token)
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const userResponse = await getUserInformation(token.accessToken)
+				if (userResponse.content) {
+					dispatch(login(userResponse.content))
+					const favoriteResponse = await getAllFavoriteSong(token.accessToken)
+					dispatch(updateFavoritePlaylist(favoriteResponse.content.map((song: any) => ({ ...song, url: song.sound }))))
+				} else {
+					console.log('failed to fetch ')
+				}
+			} catch (error) {
+				console.log('failed to get data', error)
+			}
+		}
+		fetchData()
+	}, [])
+
 	return (
 		<>
 			<Tabs
@@ -25,7 +52,7 @@ const TabsNavigation = () => {
 					},
 					tabBarBackground: () => (
 						<BlurView
-							intensity={95}
+							intensity={90}
 							style={{
 								...StyleSheet.absoluteFillObject,
 								overflow: 'hidden',
