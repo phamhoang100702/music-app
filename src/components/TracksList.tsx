@@ -29,8 +29,6 @@ export const TracksList = ({
 }: TracksListProps) => {
 	const queueOffset = useRef(0)
 	const { activeQueueId, setActiveQueueId } = useQueue();
-	console.log("id", id);
-	console.log("activeQueueId", activeQueueId);
 	const handleTrackSelect = async (selectedTrack: Track) => {
 		const trackIndex = tracks.findIndex((track) =>{
 			return track.url === selectedTrack.url;

@@ -20,7 +20,6 @@ const ItemSeparatorComponent = () => {
 
 const ArtistsScreen = () => {
 	const [artists, setArtists] = useState<any>([]) // State to store artists
-	const token = useSelector((state: any) => state.token);
 	const search = useNavigationSearch({
 		searchBarOptions: {
 			placeholder: 'Find in artists',
@@ -30,7 +29,7 @@ const ArtistsScreen = () => {
 	useEffect(() => {
 		const fetchArtists = async () => {
 			try {
-				const response = await getAllSinger(token.accessToken)// Update state with API data
+				const response = await getAllSinger()// Update state with API data
 				if (response.content) {
 					const data = response.content.filter((item: any) => item.id !== 1)
 					setArtists(data)

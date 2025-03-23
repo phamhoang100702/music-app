@@ -12,10 +12,9 @@ import { Playlist } from '@/helpers/types'
 const PlaylistScreen = () => {
 	const [playlist, setPlaylist] = useState<Playlist>({ id: 0, name: '', thumbnail: '', tracks: [], artworkPreview: '' })
 	const { id: playlistId } = useLocalSearchParams<{ id: string }>()
-	const token = useSelector((state: any) => state.token)
 
 	const fetchPlaylist = async () => {
-		const response = await getPlaylistByPlaylistId(playlistId, token.accessToken)
+		const response = await getPlaylistByPlaylistId(playlistId)
 		if (response.content) {
 			setPlaylist(response.content)
 		}

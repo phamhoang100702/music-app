@@ -1,0 +1,4 @@
+eas build -p android --profile development
+eas build:configure
+eas login
+y

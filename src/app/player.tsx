@@ -20,7 +20,6 @@ const PlayerScreen = () => {
 	const { imageColors } = usePlayerBackground(activeTrack?.artwork ?? unknownTrackImageUri)
 	const { top, bottom } = useSafeAreaInsets()
 	const { isFavorite, toggleFavorite } = useTrackPlayerFavorite()
-
 	const gradientColors = imageColors?.background && imageColors?.primary
 		? [imageColors.background, imageColors.primary] // Use imageColors if available
 		: [colors.background, colors.background];

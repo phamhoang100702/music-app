@@ -15,13 +15,11 @@ const SongsScreen = () => {
 	const [page, setPage] = useState(0)
 	const [loading, setLoading] = useState(false)
 	const isFetching = useRef(false) // Prevent multiple API calls
-	const token = useSelector((state: any) => state.token)
 	const search = useNavigationSearch({
 		searchBarOptions: {
 			placeholder: 'Find in songs',
 		},
 	})
-
 	const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
 		const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent
 		const isEndReached = layoutMeasurement.height + contentOffset.y >= contentSize.height - 20
@@ -35,7 +33,7 @@ const SongsScreen = () => {
 		isFetching.current = true
 		setLoading(true)
 		try {
-			const response = await searchSongByKeyword(search, page,20, token.accessToken)// Update state with API data
+			const response = await searchSongByKeyword(search, page, 20)// Update state with API data
 			const songs = response.content.map((song: any) => ({ ...song, url: song.sound }))
 			setTracks((prevSong: any) => [...prevSong, ...songs])
 		} catch (error) {
@@ -67,7 +65,7 @@ const SongsScreen = () => {
 				style={{ paddingHorizontal: screenPadding.horizontal }}
 			>
 				<TracksList
-					id={generateTracksListId(`songs`, search+page)}
+					id={generateTracksListId(`songs`, search + page)}
 					tracks={tracks}
 					scrollEnabled={false}
 					loading={loading}

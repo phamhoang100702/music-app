@@ -17,21 +17,21 @@ const TabsNavigation = () => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			try {
-				const userResponse = await getUserInformation(token.accessToken)
-				if (userResponse.content) {
-					dispatch(login(userResponse.content))
-					const favoriteResponse = await getAllFavoriteSong(token.accessToken)
-					dispatch(updateFavoritePlaylist(favoriteResponse.content.map((song: any) => ({ ...song, url: song.sound }))))
-				} else {
-					console.log('failed to fetch ')
-				}
-			} catch (error) {
-				console.log('failed to get data', error)
-			}
+			// try {
+			// 	const userResponse = await getUserInformation(token.accessToken)
+			// 	if (userResponse.content) {
+			// 		dispatch(login(userResponse.content))
+			// 		const favoriteResponse = await getAllFavoriteSong(token.accessToken)
+			// 		dispatch(updateFavoritePlaylist(favoriteResponse.content.map((song: any) => ({ ...song, url: song.sound }))))
+			// 	} else {
+			// 		console.log('failed to fetch ')
+			// 	}
+			// } catch (error) {
+			// 	console.log('failed to get data', error)
+			// }
 		}
 		fetchData()
-	}, [])
+	}, [token])
 
 	return (
 		<>

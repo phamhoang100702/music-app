@@ -11,11 +11,10 @@ import { useSelector } from 'react-redux'
 const ArtistDetailScreen = () => {
 	const { id: artistId } = useLocalSearchParams<{ id: string }>()
 	const [artist, setArtist] = useState<any>(null)
-	const token = useSelector((state: any) => state.token);
 	useEffect(() => {
 		const fetchArtists = async () => {
 			try {
-				const response = await getUserById(artistId,token.accessToken)
+				const response = await getUserById(artistId)
 				if (response.content) {
 					const data = response.content
 					console.log("data ",data);

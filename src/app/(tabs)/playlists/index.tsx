@@ -15,7 +15,6 @@ const PlaylistsScreen = () => {
 	const [playlists, setPlaylists] = useState<any>([])
 	const [page,setPage] = useState(0);
 	const router = useRouter()
-	const token = useSelector((state: any) => state.token)
 	const authInfo = useSelector((state: any) => state.auth)
 
 
@@ -35,7 +34,7 @@ const PlaylistsScreen = () => {
 	}
 	const fetchPlaylists = async () => {
 		try {
-			const response = await searchAllPlaylistByNameForUser(search,page,10, token.accessToken);
+			const response = await searchAllPlaylistByNameForUser(search,page,10);
 			console.log("response ",response);
 			if(response.content){
 				setPlaylists(response.content);

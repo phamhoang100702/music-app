@@ -1,4 +1,5 @@
 import { CLIENT_ERROR, SUCCESS } from '../../constants/status'
+import { getToken } from '@/services/api/auth/setToken'
 
 const API_DOMAIN = 'http://192.168.1.230:8888/api/v1/'
 
@@ -13,7 +14,8 @@ export const getDataResponse = async (response: any) => {
 	}
 }
 
-export const get = async (path: string, token: string | null) => {
+export const get = async (path: string) => {
+	const token = await getToken('accessToken')
 	const response = await fetch(API_DOMAIN + path, {
 		method: 'GET',
 		headers: {
@@ -25,7 +27,8 @@ export const get = async (path: string, token: string | null) => {
 	return getDataResponse(response)
 }
 
-export const post = async (path: string, options: any, token: string | null) => {
+export const post = async (path: string, options: any) => {
+	const token = await getToken('accessToken')
 	const response = await fetch(API_DOMAIN + path, {
 		method: 'POST',
 		headers: {
@@ -37,7 +40,8 @@ export const post = async (path: string, options: any, token: string | null) => 
 	return getDataResponse(response)
 }
 
-export const post_form_data = async (path: string, options: any, token: '') => {
+export const post_form_data = async (path: string, options: any) => {
+	const token = await getToken('accessToken')
 	const response = await fetch(API_DOMAIN + path, {
 		method: 'POST',
 		body: options,
@@ -48,7 +52,8 @@ export const post_form_data = async (path: string, options: any, token: '') => {
 	return getDataResponse(response)
 }
 
-export const put = async (path: string, options: any, token: string | null) => {
+export const put = async (path: string, options: any) => {
+	const token = await getToken('accessToken')
 	const response = await fetch(API_DOMAIN + path, {
 		method: 'PUT',
 		headers: {
@@ -62,7 +67,8 @@ export const put = async (path: string, options: any, token: string | null) => {
 }
 
 
-export const put_form_data = async (path: string, options: any, token: string | any) => {
+export const put_form_data = async (path: string, options: any) => {
+	const token = await getToken('accessToken')
 	const response = await fetch(API_DOMAIN + path, {
 		method: 'PUT',
 		body: options,
@@ -73,7 +79,8 @@ export const put_form_data = async (path: string, options: any, token: string | 
 	return getDataResponse(response)
 }
 
-export const del = async (path: string, token: string) => {
+export const del = async (path: string) => {
+	const token = await getToken('accessToken')
 	const response = await fetch(API_DOMAIN + path, {
 		method: 'DELETE',
 		headers: {
@@ -86,7 +93,8 @@ export const del = async (path: string, token: string) => {
 	}
 }
 
-export const uploadFile = async (path: string, formData: any, token: string | any) => {
+export const uploadFile = async (path: string, formData: any) => {
+	const token = await getToken('accessToken');
 	const response = await fetch(API_DOMAIN + path, {
 		method: 'POST',
 		headers: {
@@ -96,5 +104,4 @@ export const uploadFile = async (path: string, formData: any, token: string | an
 	})
 	return getDataResponse(response)
 }
-
 
