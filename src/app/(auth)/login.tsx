@@ -9,9 +9,12 @@ import { userLogin } from '@/services/api/auth'
 import { useDispatch } from 'react-redux'
 import { addUserToken, login } from '@/redux/actions/auth'
 import { getUserInformation } from '@/services/api/user'
-import { getAllFavoriteSong } from '@/services/api/playlist'
+import { getAllFavoriteSong, getAllPlaylistByUserId } from '@/services/api/playlist'
 import { updateFavoritePlaylist } from '@/redux/actions/favorite'
 import { getToken, saveToken } from '@/services/api/auth/setToken'
+import { updateListPlaylist } from '@/redux/actions/playlist'
+import { updateFollowedSinger } from '@/redux/actions/singer'
+import { getFollowedSinger } from '@/services/api/singer'
 
 const Login = () => {
 	const router = useRouter()
@@ -37,6 +40,12 @@ const Login = () => {
 				dispatch(login(userResponse.content))
 				const favoriteResponse = await getAllFavoriteSong()
 				dispatch(updateFavoritePlaylist(favoriteResponse.content.map((song: any) => ({ ...song, url: song.sound }))))
+				const playlistResponse = await getAllPlaylistByUserId(userResponse.content.id)
+				console.log("response playlist", playlistResponse)
+				dispatch(updateListPlaylist(playlistResponse.content))
+				const followedSingerResponse = await getFollowedSinger(userResponse.content.id)
+				dispatch(updateFollowedSinger(followedSingerResponse.content));
+
 			} else {
 				console.log('failed to fetch ')
 			}

@@ -25,9 +25,9 @@ export const getFollowedSinger = async (id = '') => {
 export const getListFollower = async (id = '') => {
 	return await get(`follower/total-followers/${id}`)
 }
-export const addFollow = async (singerId = '') => {
+export const addFollow = async (singerId ) => {
 	return await post(`follower/follow/${singerId}`)
 }
-export const removeFollow = async (singerId = '') => {
+export const removeFollow = async (singerId) => {
 	return await del(`follower/unfollow/${singerId}`)
 }

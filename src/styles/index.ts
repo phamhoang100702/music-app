@@ -10,6 +10,12 @@ export const defaultStyles = StyleSheet.create({
 		fontSize: fontSize.base,
 		color: colors.text,
 	},
+	roleName: {
+		color: '#fff',
+		opacity: 0.5,
+		fontSize: 14,
+		maxWidth: '40%',
+	},
 })
 
 export const utilsStyles = StyleSheet.create({

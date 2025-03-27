@@ -17,18 +17,6 @@ const TabsNavigation = () => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			// try {
-			// 	const userResponse = await getUserInformation(token.accessToken)
-			// 	if (userResponse.content) {
-			// 		dispatch(login(userResponse.content))
-			// 		const favoriteResponse = await getAllFavoriteSong(token.accessToken)
-			// 		dispatch(updateFavoritePlaylist(favoriteResponse.content.map((song: any) => ({ ...song, url: song.sound }))))
-			// 	} else {
-			// 		console.log('failed to fetch ')
-			// 	}
-			// } catch (error) {
-			// 	console.log('failed to get data', error)
-			// }
 		}
 		fetchData()
 	}, [token])
@@ -64,13 +52,6 @@ const TabsNavigation = () => {
 				}}
 			>
 				<Tabs.Screen
-					name="favorites"
-					options={{
-						title: 'Favorites',
-						tabBarIcon: ({ color }) => <FontAwesome name="heart" size={20} color={color} />,
-					}}
-				/>
-				<Tabs.Screen
 					name="playlists"
 					options={{
 						title: 'Playlists',
@@ -93,6 +74,13 @@ const TabsNavigation = () => {
 					options={{
 						title: 'Artists',
 						tabBarIcon: ({ color }) => <FontAwesome6 name="users-line" size={20} color={color} />,
+					}}
+				/>
+				<Tabs.Screen
+					name="library"
+					options={{
+						title: 'Library',
+						tabBarIcon: ({ color }) => <FontAwesome name="heart" size={20} color={color} />,
 					}}
 				/>
 			</Tabs>

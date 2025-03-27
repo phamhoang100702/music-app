@@ -35,7 +35,6 @@ const PlaylistsScreen = () => {
 	const fetchPlaylists = async () => {
 		try {
 			const response = await searchAllPlaylistByNameForUser(search,page,10);
-			console.log("response ",response);
 			if(response.content){
 				setPlaylists(response.content);
 			}

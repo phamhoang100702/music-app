@@ -15,12 +15,13 @@ export type TracksListItemProps = {
 	onTrackSelect: (track: Track) => void
 }
 
-export const TracksListItem = ({
-	track,
-	onTrackSelect: handleTrackSelect,
-}: TracksListItemProps) => {
+export const TracksListItem = (
+	{ track,
+		onTrackSelect: handleTrackSelect
+	}: TracksListItemProps) => {
 	const { playing } = useIsPlaying()
 	const isActiveTrack = useActiveTrack()?.url === track.url
+
 	return (
 		<TouchableHighlight onPress={() => handleTrackSelect(track)}>
 			<View style={styles.trackItemContainer}>

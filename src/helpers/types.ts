@@ -4,7 +4,7 @@ export type Playlist = {
 	id: number,
 	name: string,
 	thumbnail: string,
-	tracks: Track[]
+	songs: any[]
 	artworkPreview: string
 }
 

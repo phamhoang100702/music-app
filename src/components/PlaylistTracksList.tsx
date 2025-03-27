@@ -14,7 +14,6 @@ import { useSelector } from 'react-redux'
 
 export const PlaylistTracksList = ({ playlist }: { playlist: Playlist }) => {
 	const [tracks, setTracks] = useState<any>([])
-	const token = useSelector((state: any) => state.token)
 	const search = useNavigationSearch({
 		searchBarOptions: {
 			hideWhenScrolling: true,
@@ -24,7 +23,7 @@ export const PlaylistTracksList = ({ playlist }: { playlist: Playlist }) => {
 
 	const fetchSongs = async () => {
 		try {
-			const response = await getAllSongByPlaylistId(playlist.id, token.accessToken)
+			const response = await getAllSongByPlaylistId(playlist.id)
 			if (response.content){
 				playlist.tracks = response.content.map((song: any) => ({ ...song, url: song.sound }));
 				setTracks(playlist.tracks);
@@ -53,6 +52,7 @@ export const PlaylistTracksList = ({ playlist }: { playlist: Playlist }) => {
 			id={generateTracksListId(playlist.name, search)}
 			scrollEnabled={false}
 			hideQueueControls={true}
+			loading={false}
 			ListHeaderComponentStyle={styles.playlistHeaderContainer}
 			ListHeaderComponent={
 				<View>

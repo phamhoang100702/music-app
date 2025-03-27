@@ -13,6 +13,7 @@ import { useLogTrackPlayerState } from '@/hooks/useLogTrackPlayerState'
 import { getAllSinger } from '@/services/api/singer'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useSelector } from 'react-redux'
+import { ArtistItem } from '@/components/ArtistItem'
 
 const ItemSeparatorComponent = () => {
 	return <View style={[utilsStyles.itemSeparator, { marginLeft: 50, marginVertical: 12 }]} />
@@ -79,23 +80,7 @@ const ArtistsScreen = () => {
 						return (
 							<Link href={`/artists/${artist.id}`} asChild>
 								<TouchableHighlight activeOpacity={0.8}>
-									<View style={styles.artistItemContainer}>
-										<View>
-											<FastImage
-												source={{
-													uri: artist.avatar ?? unknownArtistImageUri,
-													priority: FastImage.priority.normal,
-												}}
-												style={styles.artistImage}
-											/>
-										</View>
-
-										<View style={{ width: '100%' }}>
-											<Text numberOfLines={1} style={styles.artistNameText}>
-												{artist.name}
-											</Text>
-										</View>
-									</View>
+									<ArtistItem artist={artist} />
 								</TouchableHighlight>
 							</Link>
 						)
@@ -105,23 +90,5 @@ const ArtistsScreen = () => {
 		</View>
 	)
 }
-
-const styles = StyleSheet.create({
-	artistItemContainer: {
-		flexDirection: 'row',
-		columnGap: 14,
-		alignItems: 'center',
-	},
-	artistImage: {
-		borderRadius: 32,
-		width: 40,
-		height: 40,
-	},
-	artistNameText: {
-		...defaultStyles.text,
-		fontSize: 17,
-		maxWidth: '80%',
-	},
-})
 
 export default ArtistsScreen

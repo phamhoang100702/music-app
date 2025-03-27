@@ -35,6 +35,7 @@ export const TracksList = ({
 		} )
 		if (trackIndex === -1) return
 		const isChangingQueue = id !== activeQueueId
+		console.log(`id : ${id}, activeQueueId: ${activeQueueId}`);
 		if (isChangingQueue) {
 			const beforeTracks = tracks.slice(0, trackIndex)
 			const afterTracks = tracks.slice(trackIndex + 1)
@@ -49,7 +50,6 @@ export const TracksList = ({
 			queueOffset.current = trackIndex
 			setActiveQueueId(id)
 		} else {
-			console.log("vao day nhe 2")
 
 			const nextTrackIndex =
 				trackIndex - queueOffset.current < 0

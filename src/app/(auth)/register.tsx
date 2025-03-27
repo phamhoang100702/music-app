@@ -26,7 +26,6 @@ const RegisterScreen = () => {
 			password,
 			roles: 'USER',
 		})
-		console.log('response', response)
 		if (response.status === 'ok') {
 			alert(' Register Success')
 			router.replace('/(auth)/login')

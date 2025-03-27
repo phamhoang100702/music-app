@@ -34,7 +34,7 @@ export const PlaylistsList = ({
 
 	return (
 		<FlatList
-			contentContainerStyle={{ paddingTop: 10, paddingBottom: 128 }}
+			contentContainerStyle={{ paddingTop: 20, paddingBottom: 0 }}
 			ItemSeparatorComponent={ItemDivider}
 			ListFooterComponent={ItemDivider}
 			ListEmptyComponent={

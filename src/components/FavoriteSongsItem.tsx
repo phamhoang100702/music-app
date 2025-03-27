@@ -6,17 +6,17 @@ import { StyleSheet, Text, TouchableHighlight, TouchableHighlightProps, View } f
 import FastImage from 'react-native-fast-image'
 
 type PlaylistListItemProps = {
-	playlist: Playlist
+	playlist?: Playlist
 } & TouchableHighlightProps
 
-export const PlaylistListItem = ({ playlist, ...props }: PlaylistListItemProps) => {
+export const FavoriteSongSItem = ({ ...props }: PlaylistListItemProps) => {
 	return (
 		<TouchableHighlight activeOpacity={0.8} {...props}>
 			<View style={styles.playlistItemContainer}>
 				<View>
 					<FastImage
 						source={{
-							uri: playlist.thumbnail,
+							uri: 'https://soundtify.s3.ap-southeast-1.amazonaws.com/default/favoriteSong.jpg',
 							priority: FastImage.priority.normal,
 						}}
 						style={styles.playlistArtworkImage}
@@ -38,10 +38,7 @@ export const PlaylistListItem = ({ playlist, ...props }: PlaylistListItemProps) 
 						}
 					}>
 						<Text numberOfLines={1} style={styles.playlistNameText}>
-							{playlist.name}
-						</Text>
-						<Text style={defaultStyles.roleName}>
-							Playlist
+							Liked Song
 						</Text>
 					</View>
 
@@ -59,6 +56,7 @@ const styles = StyleSheet.create({
 		columnGap: 10,
 		alignItems: 'center',
 		paddingRight: 90,
+		marginTop: 30
 	},
 	playlistArtworkImage: {
 		borderRadius: 8,
