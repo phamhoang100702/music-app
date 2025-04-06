@@ -1,81 +1,142 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { launchImageLibrary } from 'react-native-image-picker';
+import React, { useState } from 'react'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+import { useSelector, useDispatch } from 'react-redux'
+import FastImage from 'react-native-fast-image'
+import { useRouter } from 'expo-router'
+import { logout } from '@/redux/actions/auth'
+import { Ionicons } from '@expo/vector-icons'
 
-const EditProfileScreen = () => {
-	const [name, setName] = useState('Sơn Tùng M-TP');
-	const [bio, setBio] = useState('Ca sĩ nổi tiếng với nhiều bản hit');
-	const [genre, setGenre] = useState('Pop, R&B');
-	const [avatar, setAvatar] = useState(null);
+const ProfileScreen = () => {
+	const auth = useSelector((state: any) => state.auth)
+	const dispatch = useDispatch()
+	const router = useRouter()
 
-	// Chọn ảnh từ thư viện
-	const pickImage = () => {
-		launchImageLibrary({ mediaType: 'photo' }, response => {
-			if (response.assets && response.assets.length > 0) {
-				setAvatar(response.assets[0].uri);
-			}
-		});
-	};
+	const [editing, setEditing] = useState(false)
+	const [name, setName] = useState(auth.name)
+	const [bio, setBio] = useState(auth.bio)
+	const [link, setLink] = useState(auth.link)
+
+	const handleLogout = () => {
+		dispatch(logout())
+		router.push('/(auth)/login')
+	}
+
+	const handleEdit = () => {
+		setEditing(true)
+	}
+
+	const handleSave = () => {
+		setEditing(false)
+	}
 
 	return (
 		<View style={styles.container}>
-			{/* Ảnh đại diện */}
-			<TouchableOpacity onPress={pickImage}>
-				<Image
-					source={avatar ? { uri: avatar } : require('./default-avatar.png')}
-					style={styles.avatar}
-				/>
+			<Ionicons name="arrow-back" size={30} color="#fff" style={styles.backIcon} onPress={() => router.back()} />
+
+			<FastImage source={{ uri: auth.avatar }} style={styles.avatar} />
+			<Text style={styles.username}>@{auth.username}</Text>
+
+			<View style={styles.section}>
+				<Text style={styles.sectionTitle}>Personal Information</Text>
+				<View style={styles.infoRow}><Text style={styles.label}>Name</Text><Text style={styles.value}>{auth.name}</Text></View>
+				<View style={styles.infoRow}><Text style={styles.label}>Username</Text><Text
+					style={styles.value}>{auth.username}</Text></View>
+				<View style={styles.infoRow}><Text style={styles.label}>Bio</Text><Text
+					style={styles.value}>{auth.bio}</Text></View>
+				<View style={styles.infoRow}><Text style={styles.label}>Roles</Text><Text
+					style={styles.value}>{auth.roles}</Text></View>
+			</View>
+
+			<View style={styles.section}>
+				<Text style={styles.sectionTitle}>Login Information</Text>
+				<View style={styles.infoRow}><Text style={styles.label}>Email</Text><Text
+					style={styles.value}>{auth.username}</Text></View>
+				<TouchableOpacity style={styles.changePassword}><Text style={styles.linkText}>Update
+					password</Text></TouchableOpacity>
+			</View>
+			<TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+				<Text style={styles.logoutButtonText}>Logout</Text>
 			</TouchableOpacity>
-			<Text style={styles.label}>Nhấn để thay đổi ảnh</Text>
-
-			{/* Tên */}
-			<Text style={styles.label}>Tên ca sĩ</Text>
-			<TextInput style={styles.input} value={name} onChangeText={setName} />
-
-			{/* Tiểu sử */}
-			<Text style={styles.label}>Tiểu sử</Text>
-			<TextInput
-				style={[styles.input, { height: 80 }]}
-				multiline
-				value={bio}
-				onChangeText={setBio}
-			/>
-
-			{/* Thể loại nhạc */}
-			<Text style={styles.label}>Thể loại nhạc</Text>
-			<TextInput style={styles.input} value={genre} onChangeText={setGenre} />
-
-			{/* Nút Lưu */}
-			<Button title="Lưu thay đổi" onPress={() => alert('Thông tin đã được cập nhật!')} />
 		</View>
-	);
-};
+	)
+}
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		padding: 20,
-		backgroundColor: '#fff',
+		backgroundColor: '#000',
+		padding: 16,
+	},
+	backIcon: {
+		alignSelf: 'flex-start',
+		marginBottom: 10,
 	},
 	avatar: {
-		width: 120,
-		height: 120,
-		borderRadius: 60,
+		width: 100,
+		height: 100,
+		borderRadius: 50,
 		alignSelf: 'center',
 		marginBottom: 10,
 	},
-	label: {
+	username: {
+		fontSize: 18,
+		textAlign: 'center',
+		color: '#fff',
+		marginBottom: 20,
+	},
+	section: {
+		backgroundColor: '#222',
+		borderRadius: 10,
+		padding: 12,
+		marginBottom: 10,
+	},
+	sectionTitle: {
 		fontSize: 16,
 		fontWeight: 'bold',
-		marginBottom: 5,
+		color: '#fff',
+		marginBottom: 8,
 	},
-	input: {
-		borderWidth: 1,
-		borderColor: '#ccc',
-		padding: 10,
-		borderRadius: 5,
-		marginBottom: 15,
+	infoRow: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		paddingVertical: 8,
+		borderBottomWidth: 1,
+		borderBottomColor: '#444',
 	},
-});
+	label: {
+		fontSize: 14,
+		color: '#bbb',
+	},
+	value: {
+		fontSize: 14,
+		color: '#fff',
+	},
+	changePassword: {
+		paddingVertical: 10,
+		alignItems: 'center',
+	},
+	linkText: {
+		color: '#1E90FF',
+		fontSize: 14,
+	},
+	connected: {
+		color: 'green',
+	},
+	needsVerification: {
+		color: 'red',
+	},
+	logoutButton: {
+		backgroundColor: '#e74c3c',
+		paddingVertical: 12,
+		borderRadius: 8,
+		marginTop: 20,
+		alignItems: 'center',
+	},
+	logoutButtonText: {
+		color: 'white',
+		fontSize: 16,
+		fontWeight: 'bold',
+	},
+})
 
-export default EditProfileScreen;
+export default ProfileScreen

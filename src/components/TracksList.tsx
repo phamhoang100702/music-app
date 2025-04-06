@@ -30,6 +30,7 @@ export const TracksList = ({
 	const queueOffset = useRef(0)
 	const { activeQueueId, setActiveQueueId } = useQueue();
 	const handleTrackSelect = async (selectedTrack: Track) => {
+
 		const trackIndex = tracks.findIndex((track) =>{
 			return track.url === selectedTrack.url;
 		} )
@@ -82,7 +83,7 @@ export const TracksList = ({
 					</View>
 				}
 				renderItem={({ item: track }) => (
-					<TracksListItem test={"hoang dep zai"} track={track} onTrackSelect={handleTrackSelect} />
+					<TracksListItem  track={track} onTrackSelect={handleTrackSelect} />
 				)}
 				// ListFooterComponent={loading ? (
 				// 	<View style={{ padding: 10, alignItems: 'center' }}>

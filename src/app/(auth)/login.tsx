@@ -41,7 +41,6 @@ const Login = () => {
 				const favoriteResponse = await getAllFavoriteSong()
 				dispatch(updateFavoritePlaylist(favoriteResponse.content.map((song: any) => ({ ...song, url: song.sound }))))
 				const playlistResponse = await getAllPlaylistByUserId(userResponse.content.id)
-				console.log("response playlist", playlistResponse)
 				dispatch(updateListPlaylist(playlistResponse.content))
 				const followedSingerResponse = await getFollowedSinger(userResponse.content.id)
 				dispatch(updateFollowedSinger(followedSingerResponse.content));

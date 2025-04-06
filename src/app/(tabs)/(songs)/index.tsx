@@ -8,7 +8,8 @@ import { defaultStyles } from '@/styles'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { NativeScrollEvent, NativeSyntheticEvent, ScrollView, View } from 'react-native'
 import { searchSongByKeyword } from '@/services/api/song'
-import { useDispatch, useSelector } from 'react-redux'
+import { changeQueue } from '@/helpers/handleTrack'
+import { useActiveTrack } from 'react-native-track-player'
 
 const SongsScreen = () => {
 	const [tracks, setTracks] = useState<any>([])
@@ -24,8 +25,9 @@ const SongsScreen = () => {
 		const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent
 		const isEndReached = layoutMeasurement.height + contentOffset.y >= contentSize.height - 20
 		if (isEndReached && !isFetching.current) {
-
-			setPage((prevPage) => prevPage + 1)
+			if (page < 10) {
+				setPage((prevPage) => prevPage + 1)
+			}
 		}
 	}
 	const fetchSongs = async () => {
@@ -33,7 +35,7 @@ const SongsScreen = () => {
 		isFetching.current = true
 		setLoading(true)
 		try {
-			const response = await searchSongByKeyword(search, page, 20)// Update state with API data
+			const response = await searchSongByKeyword(search, page, 10)// Update state with API data
 			const songs = response.content.map((song: any) => ({ ...song, url: song.sound }))
 			setTracks((prevSong: any) => [...prevSong, ...songs])
 		} catch (error) {
@@ -43,8 +45,6 @@ const SongsScreen = () => {
 			isFetching.current = false
 		}
 	}
-
-
 	useEffect(() => {
 		fetchSongs()
 	}, [page])

@@ -1,6 +1,6 @@
 import { StackScreenWithSearchBar } from '@/constants/layout'
 import { defaultStyles } from '@/styles'
-import { Stack } from 'expo-router'
+import { router, Stack } from 'expo-router'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { colors } from '@/constants/tokens'
 import { Ionicons } from '@expo/vector-icons'
@@ -9,6 +9,9 @@ import { useSelector } from 'react-redux'
 
 const LibraryScreenLayout = () => {
 	const auth = useSelector((state: any) => state.auth)
+	const onClickProfile = () => {
+		router.push(`/(tabs)/library/profile`)
+	}
 	return (
 		<View style={defaultStyles.container}>
 			<Stack initialRouteName="index">
@@ -21,6 +24,7 @@ const LibraryScreenLayout = () => {
 							<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 								<Pressable
 									style={{ marginRight: 15 }}
+									onPress={onClickProfile}
 								>
 									<FastImage
 										source={{
@@ -64,6 +68,17 @@ const LibraryScreenLayout = () => {
 				></Stack.Screen>
 				<Stack.Screen
 					name="singer/[singerId]"
+					options={{
+						headerTitle: '',
+						headerBackVisible: true,
+						headerStyle: {
+							backgroundColor: colors.background,
+						},
+						headerTintColor: colors.primary,
+					}}
+				></Stack.Screen>
+				<Stack.Screen
+					name="profile"
 					options={{
 						headerTitle: '',
 						headerBackVisible: true,

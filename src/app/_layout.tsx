@@ -53,12 +53,7 @@ const RootNavigation = () => {
 	const user = useSelector((state: any) => state.auth)
 	const dispatch = useDispatch()
 	useEffect(() => {
-		// if (user.id) {
-		// 	router.replace('/(auth)/login') // Chuyển tới màn hình đăng nhập nếu chưa đăng nhập
-		// } else {
-		// 	handleLogin(dispatch, router) // Chuyển tới màn hình đăng nhập nếu chưa đăng nhập
-		// }
-		router.replace('/(auth)/login')
+			handleLogin(dispatch, router)
 	}, [])
 	return (
 		<Stack>

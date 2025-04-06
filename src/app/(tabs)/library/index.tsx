@@ -33,7 +33,7 @@ const LibraryScreen = () => {
 		router.push(`/(tabs)/library/playlist/${playlist.id}`)
 	}
 
-	const handleFavoriteSongPress = ()=>{
+	const handleFavoriteSongPress = () => {
 		router.push(`/(tabs)/library/favorites`)
 	}
 	return (
@@ -42,12 +42,14 @@ const LibraryScreen = () => {
 				style={{ paddingHorizontal: screenPadding.horizontal }}
 				contentInsetAdjustmentBehavior="automatic"
 			>
-				<FavoriteSongSItem onPress={handleFavoriteSongPress}/>
-				<PlaylistsList
-					scrollEnabled={false}
-					playlists={ownedPlaylist}
-					onPlaylistPress={handlePlaylistPress}
-				/>
+				<FavoriteSongSItem onPress={handleFavoriteSongPress} />
+				{ownedPlaylist && ownedPlaylist.length > 0 && (
+					<PlaylistsList
+						scrollEnabled={false}
+						playlists={ownedPlaylist}
+						onPlaylistPress={handlePlaylistPress}
+					/>
+				)}
 				<FlatList
 					contentContainerStyle={{ paddingTop: 10, paddingBottom: 120 }}
 					scrollEnabled={false}

@@ -11,7 +11,6 @@ import { Track, useActiveTrack, useIsPlaying } from 'react-native-track-player'
 
 export type TracksListItemProps = {
 	track: Track,
-	test?: string | null,
 	onTrackSelect: (track: Track) => void
 }
 
