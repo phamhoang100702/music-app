@@ -36,7 +36,6 @@ export const TracksList = ({
 		} )
 		if (trackIndex === -1) return
 		const isChangingQueue = id !== activeQueueId
-		console.log(`id : ${id}, activeQueueId: ${activeQueueId}`);
 		if (isChangingQueue) {
 			const beforeTracks = tracks.slice(0, trackIndex)
 			const afterTracks = tracks.slice(trackIndex + 1)
@@ -74,7 +73,7 @@ export const TracksList = ({
 				ItemSeparatorComponent={ItemDivider}
 				ListEmptyComponent={
 					<View>
-						<Text style={utilsStyles.emptyContentText}>No songs found</Text>
+						<Text style={utilsStyles.emptyContentText}>Không tìm thấy bài hát </Text>
 
 						<FastImage
 							source={{ uri: unknownTrackImageUri, priority: FastImage.priority.normal }}

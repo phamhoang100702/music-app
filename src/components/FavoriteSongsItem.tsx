@@ -38,7 +38,7 @@ export const FavoriteSongSItem = ({ ...props }: PlaylistListItemProps) => {
 						}
 					}>
 						<Text numberOfLines={1} style={styles.playlistNameText}>
-							Liked Song
+							Bài hát yêu thích
 						</Text>
 					</View>
 

@@ -3,6 +3,7 @@ import { REFRESH_TOKEN } from '../../../constants/constant'
 
 const Auth_Domain = 'http://192.168.1.230:8888/auth/'
 const post = async (path, options = {}) => {
+	console.log(Auth_Domain + path);
 	const response = await fetch(Auth_Domain + path, {
 		method: 'POST',
 		headers: {
@@ -22,6 +23,7 @@ export const userRegister = async (options) => {
 }
 
 export const getAccessToken = async () => {
-	const token = await getToken(REFRESH_TOKEN)
+	const token = await getToken(REFRESH_TOKEN);
+	if(token == null) return;
 	return await post(`get-token?token=${token}`)
 }

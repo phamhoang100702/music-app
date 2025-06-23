@@ -11,24 +11,10 @@ const ProfileScreen = () => {
 	const dispatch = useDispatch()
 	const router = useRouter()
 
-	const [editing, setEditing] = useState(false)
-	const [name, setName] = useState(auth.name)
-	const [bio, setBio] = useState(auth.bio)
-	const [link, setLink] = useState(auth.link)
-
 	const handleLogout = () => {
 		dispatch(logout())
 		router.push('/(auth)/login')
 	}
-
-	const handleEdit = () => {
-		setEditing(true)
-	}
-
-	const handleSave = () => {
-		setEditing(false)
-	}
-
 	return (
 		<View style={styles.container}>
 			<Ionicons name="arrow-back" size={30} color="#fff" style={styles.backIcon} onPress={() => router.back()} />
@@ -37,22 +23,23 @@ const ProfileScreen = () => {
 			<Text style={styles.username}>@{auth.username}</Text>
 
 			<View style={styles.section}>
-				<Text style={styles.sectionTitle}>Personal Information</Text>
-				<View style={styles.infoRow}><Text style={styles.label}>Name</Text><Text style={styles.value}>{auth.name}</Text></View>
-				<View style={styles.infoRow}><Text style={styles.label}>Username</Text><Text
+				<Text style={styles.sectionTitle}>Thông tin cá nhân</Text>
+				<View style={styles.infoRow}><Text style={styles.label}>Nghệ danh</Text><Text style={styles.value}>{auth.name}</Text></View>
+				<View style={styles.infoRow}><Text style={styles.label}>Tên đăng nhập</Text><Text
 					style={styles.value}>{auth.username}</Text></View>
-				<View style={styles.infoRow}><Text style={styles.label}>Bio</Text><Text
+				<View style={styles.infoRow}><Text style={styles.label}>Tiểu sử</Text><Text
 					style={styles.value}>{auth.bio}</Text></View>
-				<View style={styles.infoRow}><Text style={styles.label}>Roles</Text><Text
+				<View style={styles.infoRow}><Text style={styles.label}>Vai trò</Text><Text
 					style={styles.value}>{auth.roles}</Text></View>
 			</View>
 
 			<View style={styles.section}>
 				<Text style={styles.sectionTitle}>Login Information</Text>
 				<View style={styles.infoRow}><Text style={styles.label}>Email</Text><Text
-					style={styles.value}>{auth.username}</Text></View>
-				<TouchableOpacity style={styles.changePassword}><Text style={styles.linkText}>Update
-					password</Text></TouchableOpacity>
+					style={styles.value}>{auth.username}@gmail.com</Text></View>
+				<TouchableOpacity style={styles.changePassword}><Text style={styles.linkText}>
+					Cập nhật mật khẩu
+				</Text></TouchableOpacity>
 			</View>
 			<TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
 				<Text style={styles.logoutButtonText}>Logout</Text>

@@ -12,7 +12,7 @@ const ArtistsScreenLayout = () => {
 					name="index"
 					options={{
 						...StackScreenWithSearchBar,
-						headerTitle: 'Artists',
+						headerTitle: 'Nghệ sĩ',
 					}}
 				/>
 

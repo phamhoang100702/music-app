@@ -77,7 +77,6 @@ export const usePlaylists = () => {
 				const existingPlaylist = acc.find((playlist) => playlist.name === playlistName)
 
 				if (existingPlaylist) {
-					existingPlaylist.tracks.push(track)
 				} else {
 					// acc.push({
 					// 	name: playlistName,

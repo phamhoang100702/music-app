@@ -2,6 +2,7 @@ import { CLIENT_ERROR, SUCCESS } from '../../constants/status'
 import { getToken } from '@/services/api/auth/setToken'
 
 const API_DOMAIN = 'http://192.168.1.230:8888/api/v1/'
+export const DOMAIN = "192.168.1.230"
 
 
 export const getDataResponse = async (response: any) => {
@@ -16,6 +17,8 @@ export const getDataResponse = async (response: any) => {
 
 export const get = async (path: string) => {
 	const token = await getToken('accessToken')
+	if(!token || token == null) return;
+
 	const response = await fetch(API_DOMAIN + path, {
 		method: 'GET',
 		headers: {
@@ -29,6 +32,7 @@ export const get = async (path: string) => {
 
 export const post = async (path: string, options: any) => {
 	const token = await getToken('accessToken')
+	if(!token) return;
 	const response = await fetch(API_DOMAIN + path, {
 		method: 'POST',
 		headers: {
@@ -42,6 +46,8 @@ export const post = async (path: string, options: any) => {
 
 export const post_form_data = async (path: string, options: any) => {
 	const token = await getToken('accessToken')
+	if(!token) return;
+
 	const response = await fetch(API_DOMAIN + path, {
 		method: 'POST',
 		body: options,
@@ -54,6 +60,8 @@ export const post_form_data = async (path: string, options: any) => {
 
 export const put = async (path: string, options: any) => {
 	const token = await getToken('accessToken')
+	if(!token) return;
+
 	const response = await fetch(API_DOMAIN + path, {
 		method: 'PUT',
 		headers: {
@@ -69,6 +77,8 @@ export const put = async (path: string, options: any) => {
 
 export const put_form_data = async (path: string, options: any) => {
 	const token = await getToken('accessToken')
+	if(!token) return;
+
 	const response = await fetch(API_DOMAIN + path, {
 		method: 'PUT',
 		body: options,
@@ -81,6 +91,8 @@ export const put_form_data = async (path: string, options: any) => {
 
 export const del = async (path: string) => {
 	const token = await getToken('accessToken')
+	if(!token) return;
+
 	const response = await fetch(API_DOMAIN + path, {
 		method: 'DELETE',
 		headers: {
@@ -95,6 +107,7 @@ export const del = async (path: string) => {
 
 export const uploadFile = async (path: string, formData: any) => {
 	const token = await getToken('accessToken');
+	if(!token) return;
 	const response = await fetch(API_DOMAIN + path, {
 		method: 'POST',
 		headers: {

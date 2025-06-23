@@ -20,6 +20,7 @@ import { getAllFavoriteSong } from '@/services/api/playlist'
 import { updateFavoritePlaylist } from '@/redux/actions/favorite'
 import { getAccessToken } from '@/services/api/auth'
 import { handleLogin } from '@/helpers/handleLogin'
+import ChatbotUI from '@/app/chatbot'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -53,38 +54,42 @@ const RootNavigation = () => {
 	const user = useSelector((state: any) => state.auth)
 	const dispatch = useDispatch()
 	useEffect(() => {
-			handleLogin(dispatch, router)
+		handleLogin(dispatch, router)
 	}, [])
 	return (
-		<Stack>
-			<Stack.Screen name="(auth)" options={{ headerShown: false }} />
-			<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+		<>
+			<Stack>
+				<Stack.Screen name="(auth)" options={{ headerShown: false }} />
+				<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 
-			<Stack.Screen
-				name="player"
-				options={{
-					presentation: 'card',
-					gestureEnabled: true,
-					gestureDirection: 'vertical',
-					animationDuration: 400,
-					headerShown: false,
-				}}
-			/>
+				<Stack.Screen
+					name="player"
+					options={{
+						presentation: 'card',
+						gestureEnabled: true,
+						gestureDirection: 'vertical',
+						animationDuration: 400,
+						headerShown: false,
+					}}
+				/>
 
-			<Stack.Screen
-				name="(modals)/addToPlaylist"
-				options={{
-					presentation: 'modal',
-					headerStyle: {
-						backgroundColor: colors.background,
-					},
-					headerTitle: 'Add to playlist',
-					headerTitleStyle: {
-						color: colors.text,
-					},
-				}}
-			/>
-		</Stack>
+				<Stack.Screen
+					name="(modals)/addToPlaylist"
+					options={{
+						presentation: 'modal',
+						headerStyle: {
+							backgroundColor: colors.background,
+						},
+						headerTitle: 'Add to playlist',
+						headerTitleStyle: {
+							color: colors.text,
+						},
+					}}
+				/>
+			</Stack>
+			<ChatbotUI />
+		</>
+
 	)
 }
 

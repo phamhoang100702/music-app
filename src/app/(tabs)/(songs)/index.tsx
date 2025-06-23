@@ -1,15 +1,11 @@
 import { TracksList } from '@/components/TracksList'
 import { screenPadding } from '@/constants/tokens'
-import { trackTitleFilter } from '@/helpers/filter'
 import { generateTracksListId } from '@/helpers/miscellaneous'
 import { useNavigationSearch } from '@/hooks/useNavigationSearch'
-import { useTracks } from '@/store/library'
 import { defaultStyles } from '@/styles'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { NativeScrollEvent, NativeSyntheticEvent, ScrollView, View } from 'react-native'
 import { searchSongByKeyword } from '@/services/api/song'
-import { changeQueue } from '@/helpers/handleTrack'
-import { useActiveTrack } from 'react-native-track-player'
 
 const SongsScreen = () => {
 	const [tracks, setTracks] = useState<any>([])
@@ -37,9 +33,10 @@ const SongsScreen = () => {
 		try {
 			const response = await searchSongByKeyword(search, page, 10)// Update state with API data
 			const songs = response.content.map((song: any) => ({ ...song, url: song.sound }))
+			console.log(songs);
 			setTracks((prevSong: any) => [...prevSong, ...songs])
 		} catch (error) {
-			console.error('Error fetching artists:', error)
+			console.error('Error fetching songs:', error)
 		} finally {
 			setLoading(false)
 			isFetching.current = false

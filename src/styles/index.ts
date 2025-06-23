@@ -47,10 +47,10 @@ export const utilsStyles = StyleSheet.create({
 		opacity: 0.3,
 	},
 	logoStyle: {
-		width: 350,
+		width: 600,
 		height: 350,
 		alignSelf: 'center',
-		marginTop: 10,
+		marginTop: 5,
 		opacity: 0.3,
 	},
 })

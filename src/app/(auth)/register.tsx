@@ -1,13 +1,20 @@
 // app/auth/register.js
-import React, { useState } from 'react'
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native'
-import { useDispatch } from 'react-redux'
-import FastImage from 'react-native-fast-image'
 import { soundtifyLogoUri } from '@/constants/images'
+import { userRegister } from '@/services/api/auth'
 import { utilsStyles } from '@/styles'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons'
-import { userRegister } from '@/services/api/auth'
 import { router } from 'expo-router'
+import React, { useState } from 'react'
+import {
+	ActivityIndicator,
+	StyleSheet,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	View,
+} from 'react-native'
+import FastImage from 'react-native-fast-image'
+import { useDispatch } from 'react-redux'
 
 const RegisterScreen = () => {
 	const dispatch = useDispatch()
@@ -34,7 +41,6 @@ const RegisterScreen = () => {
 		}
 	}
 
-
 	const handleRegister = async () => {
 		// Kiểm tra các trường không để trống
 		if (!name || !username || !password) {
@@ -50,7 +56,6 @@ const RegisterScreen = () => {
 			registerRequest()
 		} catch (error) {
 			console.log('Đăng ký thất bại', error)
-
 		} finally {
 			setLoading(false)
 		}
@@ -66,22 +71,19 @@ const RegisterScreen = () => {
 			</View>
 
 			{/* Trường tên */}
-			<View style={{
-				flexDirection: 'row',
-				borderBottomColor: '#ccc',
-				borderBottomWidth: 1,
-				marginBottom: 25,
-				paddingBottom: 8,
-			}}>
-				<Ionicons
-					name="person-outline"
-					size={24}
-					color="black"
-					style={{ marginRight: 10 }}
-				/>
+			<View
+				style={{
+					flexDirection: 'row',
+					borderBottomColor: '#ccc',
+					borderBottomWidth: 1,
+					marginBottom: 25,
+					paddingBottom: 8,
+				}}
+			>
+				<Ionicons name="person-outline" size={24} color="black" style={{ marginRight: 10 }} />
 				<TextInput
 					style={styles.loginInput}
-					placeholder="Name"
+					placeholder="Tên người dùng"
 					keyboardType="email-address"
 					autoCapitalize="none"
 					value={name}
@@ -90,22 +92,19 @@ const RegisterScreen = () => {
 			</View>
 
 			{/* Trường username */}
-			<View style={{
-				flexDirection: 'row',
-				borderBottomColor: '#ccc',
-				borderBottomWidth: 1,
-				marginBottom: 25,
-				paddingBottom: 8,
-			}}>
-				<MaterialIcons
-					name="alternate-email"
-					size={24}
-					color="black"
-					style={{ marginRight: 10 }}
-				/>
+			<View
+				style={{
+					flexDirection: 'row',
+					borderBottomColor: '#ccc',
+					borderBottomWidth: 1,
+					marginBottom: 25,
+					paddingBottom: 8,
+				}}
+			>
+				<MaterialIcons name="alternate-email" size={24} color="black" style={{ marginRight: 10 }} />
 				<TextInput
 					style={styles.loginInput}
-					placeholder="Username"
+					placeholder="Tên đăng nhập"
 					keyboardType="email-address"
 					autoCapitalize="none"
 					value={username}
@@ -113,50 +112,44 @@ const RegisterScreen = () => {
 				/>
 			</View>
 
-			<View style={{
-				flexDirection: 'row',
-				borderBottomColor: '#ccc',
-				borderBottomWidth: 1,
-				marginBottom: 25,
-				paddingBottom: 8,
-			}}>
-				<Ionicons
-					name="lock-closed-outline"
-					size={24}
-					color="#ccc"
-					style={{ marginRight: 10 }}
-				/>
+			<View
+				style={{
+					flexDirection: 'row',
+					borderBottomColor: '#ccc',
+					borderBottomWidth: 1,
+					marginBottom: 25,
+					paddingBottom: 8,
+				}}
+			>
+				<Ionicons name="lock-closed-outline" size={24} color="#ccc" style={{ marginRight: 10 }} />
 				<TextInput
 					style={styles.loginInput}
-					placeholder="Password"
+					placeholder="Mật khẩu"
 					secureTextEntry
 					value={password}
 					onChangeText={setPassword}
 				/>
 			</View>
-			<View style={{
-				flexDirection: 'row',
-				borderBottomColor: '#ccc',
-				borderBottomWidth: 1,
-				marginBottom: 25,
-				paddingBottom: 8,
-			}}>
-				<Ionicons
-					name="lock-closed-outline"
-					size={24}
-					color="#ccc"
-					style={{ marginRight: 10 }}
-				/>
+			<View
+				style={{
+					flexDirection: 'row',
+					borderBottomColor: '#ccc',
+					borderBottomWidth: 1,
+					marginBottom: 25,
+					paddingBottom: 8,
+				}}
+			>
+				<Ionicons name="lock-closed-outline" size={24} color="#ccc" style={{ marginRight: 10 }} />
 				<TextInput
 					style={styles.loginInput}
-					placeholder="Retype password"
+					placeholder="Nhập lại mật khẩu"
 					secureTextEntry
 					value={retypePassword}
 					onChangeText={setRetypePassword}
 				/>
 			</View>
 			<TouchableOpacity style={styles.button} onPress={handleRegister} disabled={loading}>
-				{loading ? <ActivityIndicator color="#fff" /> : <Text>Register</Text>}
+				{loading ? <ActivityIndicator color="#fff" /> : <Text>Đăng kí</Text>}
 			</TouchableOpacity>
 		</View>
 	)
@@ -166,6 +159,8 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: 'center',
+		backgroundColor: '#212624',
+		alignItems: 'center',
 		padding: 20,
 	},
 	header: {
@@ -182,13 +177,12 @@ const styles = StyleSheet.create({
 		borderRadius: 8,
 	},
 	button: {
-		backgroundColor: '#159dbf',
+		backgroundColor: '#096b41',
 		width: '100%',
 		padding: 15,
 		borderRadius: 15,
 		alignItems: 'center',
 		marginTop: 10,
-
 	},
 	loginInput: {
 		width: '80%',
@@ -196,6 +190,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 15,
 		paddingVertical: 0,
 		flex: 1,
+		color: '#e6edea',
 	},
 })
 

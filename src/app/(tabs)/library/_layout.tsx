@@ -38,7 +38,7 @@ const LibraryScreenLayout = () => {
 										}}
 									/>
 								</Pressable>
-								<Text style={styles.playlistNameText}> Your Library</Text>
+								<Text style={styles.playlistNameText}> Thư viện của bạn</Text>
 							</View>
 
 						),

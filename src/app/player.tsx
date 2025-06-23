@@ -10,21 +10,21 @@ import { useTrackPlayerFavorite } from '@/hooks/useTrackPlayerFavorite'
 import { defaultStyles, utilsStyles } from '@/styles'
 import { FontAwesome } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
+import { useRef } from 'react'
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useActiveTrack } from 'react-native-track-player'
-import { BottomSheet } from '@rneui/base'
-import { useRef } from 'react'
 
 const PlayerScreen = () => {
 	const activeTrack = useActiveTrack()
 	const { imageColors } = usePlayerBackground(activeTrack?.artwork ?? unknownTrackImageUri)
 	const { top, bottom } = useSafeAreaInsets()
 	const { isFavorite, toggleFavorite } = useTrackPlayerFavorite()
-	const gradientColors = imageColors?.background && imageColors?.primary
-		? [imageColors.background, imageColors.primary] // Use imageColors if available
-		: [colors.background, colors.background]
+	const gradientColors =
+		imageColors?.background && imageColors?.primary
+			? [imageColors.background, imageColors.primary] // Use imageColors if available
+			: [colors.background, colors.background]
 	const sheetRef = useRef(null)
 
 	if (!activeTrack) {
@@ -35,13 +35,9 @@ const PlayerScreen = () => {
 		)
 	}
 
-	console.log('activeTrack', activeTrack)
 	return (
 		<View style={{ flex: 1 }}>
-			<LinearGradient
-				style={{ flex: 1 }}
-				colors={gradientColors}
-			>
+			<LinearGradient style={{ flex: 1 }} colors={gradientColors}>
 				<View style={styles.overlayContainer}>
 					<DismissPlayerSymbol />
 					<View style={{ flex: 1, marginTop: top + 70, marginBottom: bottom }}>
@@ -105,8 +101,6 @@ const PlayerScreen = () => {
 				</View>
 			</LinearGradient>
 		</View>
-
-
 	)
 }
 
@@ -142,7 +136,7 @@ const styles = StyleSheet.create({
 	overlayContainer: {
 		...defaultStyles.container,
 		paddingHorizontal: screenPadding.horizontal,
-		backgroundColor: 'rgba(0,0,0,0.5)',
+		backgroundColor: 'rgba(134, 132, 132, 0.3)',
 	},
 	artworkImageContainer: {
 		shadowOffset: {

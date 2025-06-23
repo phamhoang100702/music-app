@@ -3,7 +3,7 @@ import { colors, fontSize } from '@/constants/tokens'
 import { FontAwesome, FontAwesome6, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { BlurView } from 'expo-blur'
 import { Tabs } from 'expo-router'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { getAllFavoriteSong } from '@/services/api/playlist'
@@ -63,23 +63,24 @@ const TabsNavigation = () => {
 				<Tabs.Screen
 					name="(songs)"
 					options={{
-						title: 'Songs',
+						title: 'Bài hát',
 						tabBarIcon: ({ color }) => (
 							<Ionicons name="musical-notes-sharp" size={24} color={color} />
 						),
 					}}
 				/>
+
 				<Tabs.Screen
 					name="artists"
 					options={{
-						title: 'Artists',
+						title: 'Nghệ sĩ',
 						tabBarIcon: ({ color }) => <FontAwesome6 name="users-line" size={20} color={color} />,
 					}}
 				/>
 				<Tabs.Screen
 					name="library"
 					options={{
-						title: 'Library',
+						title: 'Thư viện',
 						tabBarIcon: ({ color }) => <FontAwesome name="heart" size={20} color={color} />,
 					}}
 				/>

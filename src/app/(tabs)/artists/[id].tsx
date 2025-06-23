@@ -2,11 +2,10 @@ import { ArtistTracksList } from '@/components/ArtistTracksList'
 import { screenPadding } from '@/constants/tokens'
 import { defaultStyles } from '@/styles'
 import { Redirect, useLocalSearchParams } from 'expo-router'
-import { Text, View } from 'react-native'
+import {  View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { useEffect, useState } from 'react'
 import { getUserById } from '@/services/api/user'
-import { useSelector } from 'react-redux'
 
 const ArtistDetailScreen = () => {
 	const { id: artistId } = useLocalSearchParams<{ id: string }>()

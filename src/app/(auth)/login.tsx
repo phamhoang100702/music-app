@@ -1,20 +1,28 @@
-import React, { useState } from 'react'
-import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, StyleSheet, Alert, Image } from 'react-native'
-import { useRouter } from 'expo-router'
-import FastImage from 'react-native-fast-image'
-import { soundtifyLogoUri, unknownTrackImageUri } from '@/constants/images'
-import { utilsStyles } from '@/styles'
-import { Ionicons, MaterialIcons } from '@expo/vector-icons'
-import { userLogin } from '@/services/api/auth'
-import { useDispatch } from 'react-redux'
-import { addUserToken, login } from '@/redux/actions/auth'
-import { getUserInformation } from '@/services/api/user'
-import { getAllFavoriteSong, getAllPlaylistByUserId } from '@/services/api/playlist'
+import { soundtifyLogoUri } from '@/constants/images'
+import { login } from '@/redux/actions/auth'
 import { updateFavoritePlaylist } from '@/redux/actions/favorite'
-import { getToken, saveToken } from '@/services/api/auth/setToken'
 import { updateListPlaylist } from '@/redux/actions/playlist'
 import { updateFollowedSinger } from '@/redux/actions/singer'
+import { userLogin } from '@/services/api/auth'
+import { saveToken } from '@/services/api/auth/setToken'
+import { getAllFavoriteSong, getAllPlaylistByUserId } from '@/services/api/playlist'
 import { getFollowedSinger } from '@/services/api/singer'
+import { getUserInformation } from '@/services/api/user'
+import { utilsStyles } from '@/styles'
+import { Ionicons, MaterialIcons } from '@expo/vector-icons'
+import { useRouter } from 'expo-router'
+import React, { useState } from 'react'
+import {
+	ActivityIndicator,
+	Alert,
+	StyleSheet,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	View,
+} from 'react-native'
+import FastImage from 'react-native-fast-image'
+import { useDispatch } from 'react-redux'
 
 const Login = () => {
 	const router = useRouter()
@@ -28,29 +36,49 @@ const Login = () => {
 	}
 
 	const loginRequest = async () => {
-		const response = await userLogin({
-			username,
-			password,
-		})
-		if (response.content) {
-			const token = response.content;
-			saveToken(token)
-			const userResponse = await getUserInformation()
-			if (userResponse.content) {
-				dispatch(login(userResponse.content))
-				const favoriteResponse = await getAllFavoriteSong()
-				dispatch(updateFavoritePlaylist(favoriteResponse.content.map((song: any) => ({ ...song, url: song.sound }))))
-				const playlistResponse = await getAllPlaylistByUserId(userResponse.content.id)
-				dispatch(updateListPlaylist(playlistResponse.content))
-				const followedSingerResponse = await getFollowedSinger(userResponse.content.id)
-				dispatch(updateFollowedSinger(followedSingerResponse.content));
-
+		try {
+			const response = await fetch('https://jsonplaceholder.typicode.com/todos/1')
+			console.log(response)
+			const data = await response.json()
+			if (response.ok) {
+				console.log('Kết nối thành công: ' + JSON.stringify(data))
 			} else {
-				console.log('failed to fetch ')
+				console.log('Lỗi kết nối!')
 			}
-			router.replace('/(tabs)/(songs)')
-		} else {
-			Alert.alert('Notification', response.message)
+		} catch (error) {
+			console.log('Lỗi kết nối mạng: ' + error)
+		}
+		try {
+			const response = await userLogin({
+				username,
+				password,
+			})
+			console.log('response', response)
+			if (response.content) {
+				const token = response.content
+				saveToken(token)
+				const userResponse = await getUserInformation()
+				if (userResponse.content) {
+					dispatch(login(userResponse.content))
+					const favoriteResponse = await getAllFavoriteSong()
+					dispatch(
+						updateFavoritePlaylist(
+							favoriteResponse.content.map((song: any) => ({ ...song, url: song.sound })),
+						),
+					)
+					const playlistResponse = await getAllPlaylistByUserId(userResponse.content.id)
+					dispatch(updateListPlaylist(playlistResponse.content))
+					const followedSingerResponse = await getFollowedSinger(userResponse.content.id)
+					dispatch(updateFollowedSinger(followedSingerResponse.content))
+				} else {
+					console.log('failed to fetch ')
+				}
+				router.replace('/(tabs)/(songs)')
+			} else {
+				Alert.alert('Notification', response.message)
+			}
+		} catch (error) {
+			console.log(error)
 		}
 	}
 
@@ -58,41 +86,40 @@ const Login = () => {
 		setLoading(true)
 		if (!username || !password) {
 			Alert.alert('Notification', 'You have to fill in all information')
+			setLoading(false)
 			return
 		}
+		console.log('da vao day')
 		loginRequest()
 		setLoading(false)
-		// setTimeout(() => {
-		// 	setLoading(false)
-		// 	Alert.alert('Thành công', 'Đăng nhập thành công!')
-		// 	router.replace('/(tabs)/(songs)') // Chuyển hướng đến trang chính
-		// }, 1500)
+		setTimeout(() => {
+			setLoading(false)
+			Alert.alert('Thành công', 'Đăng nhập thành công!')
+			router.replace('/(tabs)/(songs)') // Chuyển hướng đến trang chính
+		}, 1500)
 	}
 
 	return (
 		<View style={styles.container}>
 			<View>
 				<FastImage
-					source={{ uri: soundtifyLogoUri, priority: FastImage.priority.normal }}
+					source={{ uri: soundtifyLogoUri, priority: FastImage.priority.high }}
 					style={utilsStyles.logoStyle}
 				/>
 			</View>
-			<View style={{
-				flexDirection: 'row',
-				borderBottomColor: '#ccc',
-				borderBottomWidth: 1,
-				marginBottom: 25,
-				paddingBottom: 8,
-			}}>
-				<MaterialIcons
-					name="alternate-email"
-					size={24}
-					color="black"
-					style={{ marginRight: 10 }}
-				/>
+			<View
+				style={{
+					flexDirection: 'row',
+					borderBottomColor: '#ccc',
+					borderBottomWidth: 1,
+					marginBottom: 25,
+					paddingBottom: 8,
+				}}
+			>
+				<MaterialIcons name="alternate-email" size={24} color="black" style={{ marginRight: 10 }} />
 				<TextInput
 					style={styles.loginInput}
-					placeholder="Username"
+					placeholder="Tên đăng nhập"
 					keyboardType="email-address"
 					autoCapitalize="none"
 					value={username}
@@ -100,22 +127,19 @@ const Login = () => {
 				/>
 			</View>
 
-			<View style={{
-				flexDirection: 'row',
-				borderBottomColor: '#ccc',
-				borderBottomWidth: 1,
-				marginBottom: 25,
-				paddingBottom: 8,
-			}}>
-				<Ionicons
-					name="lock-closed-outline"
-					size={24}
-					color="#ccc"
-					style={{ marginRight: 10 }}
-				/>
+			<View
+				style={{
+					flexDirection: 'row',
+					borderBottomColor: '#ccc',
+					borderBottomWidth: 1,
+					marginBottom: 25,
+					paddingBottom: 8,
+				}}
+			>
+				<Ionicons name="lock-closed-outline" size={24} color="#ccc" style={{ marginRight: 10 }} />
 				<TextInput
 					style={styles.loginInput}
-					placeholder="Password"
+					placeholder="Mật khẩu"
 					secureTextEntry
 					value={password}
 					onChangeText={setPassword}
@@ -123,11 +147,15 @@ const Login = () => {
 			</View>
 
 			<TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
-				{loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Log in</Text>}
+				{loading ? (
+					<ActivityIndicator color="#fff" />
+				) : (
+					<Text style={styles.buttonText}>Đăng nhập</Text>
+				)}
 			</TouchableOpacity>
 
 			<TouchableOpacity onPress={() => router.push('/(auth)/register')}>
-				<Text style={styles.registerText}>Dont have an account, register?</Text>
+				<Text style={styles.registerText}>Bạn chưa có tài khoản?</Text>
 			</TouchableOpacity>
 		</View>
 	)
@@ -138,7 +166,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: '#f4f4f4',
+		backgroundColor: '#212624',
 		padding: 20,
 	},
 	title: {
@@ -149,7 +177,7 @@ const styles = StyleSheet.create({
 	input: {
 		width: '100%',
 		height: 50,
-		backgroundColor: '#fff',
+		backgroundColor: '#e6edea',
 		borderRadius: 8,
 		paddingHorizontal: 15,
 		marginBottom: 10,
@@ -157,7 +185,7 @@ const styles = StyleSheet.create({
 		borderColor: '#ccc',
 	},
 	button: {
-		backgroundColor: '#159dbf',
+		backgroundColor: '#096b41',
 		width: '100%',
 		padding: 15,
 		borderRadius: 15,
@@ -180,6 +208,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 15,
 		paddingVertical: 0,
 		flex: 1,
+		color: '#e6edea',
 	},
 })
 

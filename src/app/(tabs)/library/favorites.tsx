@@ -9,16 +9,28 @@ import { useEffect, useMemo, useState } from 'react'
 import { ScrollView, View } from 'react-native'
 import { useSelector } from 'react-redux'
 
- const FavoritesScreen = () => {
+const FavoritesScreen = () => {
 	const favoritesTracks = useSelector((state: any) => state.favorite)
 	const [loading, setLoading] = useState(false)
+	const [songQueueHaveLyric, setSongQueueHaveLyric] = useState([])
 	const search = useNavigationSearch({
 		searchBarOptions: {
 			placeholder: 'Find in songs',
 		},
 	})
-	useEffect(() => {
 
+
+	useEffect(() => {
+		setSongQueueHaveLyric(favoritesTracks.map((track: any) => ({
+				...track,
+				name: track.title,
+				musicSrc: track.sound,
+				cover: track.thumbnail,
+				singer: track.singers.map((i: any) => i.name).join(', '),
+				lyric: "No Lyric",
+
+			}
+		)))
 	}, [favoritesTracks])
 	return (
 		<View style={defaultStyles.container}>
@@ -37,5 +49,5 @@ import { useSelector } from 'react-redux'
 	)
 }
 
-export default FavoritesScreen;
+export default FavoritesScreen
 
